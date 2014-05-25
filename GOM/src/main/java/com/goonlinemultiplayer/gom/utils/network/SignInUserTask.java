@@ -7,14 +7,15 @@ import android.os.AsyncTask;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.goonlinemultiplayer.gom.BoardMenuActivity;
 import com.goonlinemultiplayer.gom.SignInActivity;
-import com.goonlinemultiplayer.gom.TempActivity;
 import com.goonlinemultiplayer.gom.utils.DialogFactory;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
@@ -96,8 +97,8 @@ public class SignInUserTask extends AsyncTask<String, Void, Integer>{
     }
 
     private void startGameActivity(){
-        Intent i = new Intent(a, TempActivity.class);
-        i.putExtra(SignInActivity.BOARDS_JSON_EXTRA, "{}");
+        Intent i = new Intent(a, BoardMenuActivity.class);
+        i.putExtra(SignInActivity.BOARDS_JSON_EXTRA, boardData);
         a.startActivity(i);
     }
 
@@ -107,6 +108,13 @@ public class SignInUserTask extends AsyncTask<String, Void, Integer>{
         if(request == null) return false;
         try {
             HttpResponse response = httpclient.execute(request);
+            if(response.getStatusLine().getStatusCode() == 200) {
+                boardData = EntityUtils.toString(response.getEntity());
+                System.out.println("Board Data: " + boardData);
+            } else {
+                System.out.println("Board Data: None");
+                return false;
+            }
         } catch (IOException e) {
             System.out.println(e);
             return false;

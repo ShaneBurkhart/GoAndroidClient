@@ -35,7 +35,6 @@ public class SignInActivity extends ActionBarActivity {
 
         googleButton.setSize(SignInButton.SIZE_WIDE);
 
-
         mainLayout.addView(googleButton);
 
         googleButton.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +46,6 @@ public class SignInActivity extends ActionBarActivity {
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -19,7 +19,7 @@ public class RequestFactory {
 
     public static HttpRequestBase createSignInUserRequest(String token){
         // Create a new HttpClient and Post Header
-        HttpPost httppost = new HttpPost(BASE_URL);
+        HttpPost httppost = new HttpPost(BASE_URL + "/user");
 
         try {
             // Add your data
