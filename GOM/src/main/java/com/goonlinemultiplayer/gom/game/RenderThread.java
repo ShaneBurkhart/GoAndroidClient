@@ -1,4 +1,4 @@
-package com.goonlinemultiplayer.gom.utils;
+package com.goonlinemultiplayer.gom.game;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
@@ -9,7 +9,7 @@ import com.goonlinemultiplayer.gom.views.GameView;
  * Created by shane on 5/14/14.
  */
 public class RenderThread extends Thread{
-    private static final int FPS = 40;
+    private static final int FPS = 30;
     private static final long FRAME_LENGTH = (long) ((1f / FPS) * 1000L);
     private boolean isRunning = false;
     private GameView view;
@@ -27,15 +27,13 @@ public class RenderThread extends Thread{
         this.isRunning = isRunning;
     }
 
-    int count = 0;
-
     @Override
     public void run() {
         Canvas c;
+        last_time = System.currentTimeMillis();
 
         while(isRunning){
             c = null;
-            if(last_time == 0) last_time = System.currentTimeMillis();
 
             try {
                 c = holder.lockCanvas();
@@ -51,7 +49,6 @@ public class RenderThread extends Thread{
             delta_time = current_time - last_time;
             last_time = current_time;
             try {
-                System.out.println(delta_time);
                 if (delta_time < FRAME_LENGTH)
                     Thread.sleep(FRAME_LENGTH - delta_time);
                 else

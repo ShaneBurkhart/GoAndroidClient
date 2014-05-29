@@ -8,4 +8,8 @@ public class Board {
     public int width;
     public int height;
     public String pieces;
+
+    public String toString(){
+        return id;
+    }
 }

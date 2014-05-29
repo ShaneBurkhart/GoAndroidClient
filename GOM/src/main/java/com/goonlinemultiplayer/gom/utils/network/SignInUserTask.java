@@ -10,12 +10,15 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.goonlinemultiplayer.gom.BoardMenuActivity;
 import com.goonlinemultiplayer.gom.SignInActivity;
 import com.goonlinemultiplayer.gom.utils.DialogFactory;
+import com.goonlinemultiplayer.gom.utils.SessionToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -26,11 +29,15 @@ public class SignInUserTask extends AsyncTask<String, Void, Integer>{
     private static final int SUCCESS = 0;
     private static final int ERROR = 1;
     private static final int AUTHORIZATION_REQUIRED = 2;
-    private static final String SCOPE = "oauth2:https://www.googleapis.com/auth/userinfo.profile";
+    private static final String SCOPE = "oauth2:https://www.googleapis.com/auth/plus.login";
 
     SignInActivity a;
     String token;
+    String responseData;
     String boardData;
+    String sessionToken;
+    String account;
+    int responseCode;
 
     ProgressDialog progressDialog;
 
@@ -46,7 +53,7 @@ public class SignInUserTask extends AsyncTask<String, Void, Integer>{
     @Override
     protected Integer doInBackground(String... strings) {
         if(strings.length < 1) return ERROR;
-        String account = strings[0];
+        account = strings[0];
 
         // Try to get token
         try {
@@ -91,6 +98,11 @@ public class SignInUserTask extends AsyncTask<String, Void, Integer>{
                 System.out.println("Authorization required.  Asking for permission in another intent.");
                 break;
             case ERROR:
+                if(responseCode == 401){
+                    GoogleAuthUtil.invalidateToken(a, token);
+                    new SignInUserTask(a).execute(account);
+                    return;
+                }
                 showGoogleAuthErrorDialog();
                 break;
         }
@@ -108,11 +120,23 @@ public class SignInUserTask extends AsyncTask<String, Void, Integer>{
         if(request == null) return false;
         try {
             HttpResponse response = httpclient.execute(request);
-            if(response.getStatusLine().getStatusCode() == 200) {
-                boardData = EntityUtils.toString(response.getEntity());
-                System.out.println("Board Data: " + boardData);
+            responseCode = response.getStatusLine().getStatusCode();
+            if(responseCode == 200) {
+                responseData = EntityUtils.toString(response.getEntity());
+                System.out.println("Response Data: " + responseData);
+
+                try {
+                    JSONObject root = new JSONObject(responseData);
+                    sessionToken = root.getString("session_token");
+                    if(sessionToken == null || sessionToken.equals("")) return false;
+                    SessionToken.set(sessionToken);
+                    boardData = root.getString("boards");
+                } catch (JSONException e) {
+                    System.out.println(e);
+                    return false;
+                }
             } else {
-                System.out.println("Board Data: None");
+                System.out.println("Error Request Code: " + response.getStatusLine().getStatusCode());
                 return false;
             }
         } catch (IOException e) {

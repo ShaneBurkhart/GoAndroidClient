@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class RequestFactory {
 
-    public static final String BASE_URL = "http://192.168.56.1:3000";
+    public static final String BASE_URL = "http://192.168.1.40:3000";
 
     public static HttpRequestBase createSignInUserRequest(String token){
         // Create a new HttpClient and Post Header
@@ -24,7 +24,7 @@ public class RequestFactory {
         try {
             // Add your data
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("token", token));
+            nameValuePairs.add(new BasicNameValuePair("access_token", token));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
         } catch (UnsupportedEncodingException e) {
