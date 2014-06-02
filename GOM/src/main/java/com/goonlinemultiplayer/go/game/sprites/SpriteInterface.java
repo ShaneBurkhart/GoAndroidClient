@@ -1,4 +1,4 @@
-package com.goonlinemultiplayer.gom.game.sprites;
+package com.goonlinemultiplayer.go.game.sprites;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,4 +9,5 @@ import android.graphics.Paint;
 public interface SpriteInterface {
     public void draw(Canvas c, Paint p, float x_offset, float y_offset);
     public void update(float delta);
+    public boolean onTouch(float x, float y);
 }

@@ -1,4 +1,4 @@
-package com.goonlinemultiplayer.gom.models;
+package com.goonlinemultiplayer.go.models;
 
 /**
  * Created by shane on 5/23/14.

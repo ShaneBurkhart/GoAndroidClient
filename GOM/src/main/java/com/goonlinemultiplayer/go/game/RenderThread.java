@@ -1,9 +1,9 @@
-package com.goonlinemultiplayer.gom.game;
+package com.goonlinemultiplayer.go.game;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import com.goonlinemultiplayer.gom.views.GameView;
+import com.goonlinemultiplayer.go.views.GameView;
 
 /**
  * Created by shane on 5/14/14.

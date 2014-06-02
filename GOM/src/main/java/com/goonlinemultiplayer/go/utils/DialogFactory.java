@@ -1,4 +1,4 @@
-package com.goonlinemultiplayer.gom.utils;
+package com.goonlinemultiplayer.go.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;

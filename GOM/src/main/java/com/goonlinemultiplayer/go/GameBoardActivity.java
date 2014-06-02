@@ -1,4 +1,4 @@
-package com.goonlinemultiplayer.gom;
+package com.goonlinemultiplayer.go;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -6,8 +6,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
-import com.goonlinemultiplayer.gom.game.GoGame;
-import com.goonlinemultiplayer.gom.views.GameView;
+import com.goonlinemultiplayer.go.game.GoGame;
+import com.goonlinemultiplayer.go.views.GameView;
 
 /**
  * Created by shane on 5/26/14.
